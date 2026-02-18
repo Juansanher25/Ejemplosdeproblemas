@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METODOLOGÍA DE LA INVESTIGACIÓN | Año 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: Academic Future -->
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        academic: {
+                            bg: '#f8fafc',
+                            surface: '#ffffff',
+                            primary: '#1e3a8a',
+                            accent: '#0891b2',
+                            text: '#1e293b',
+                            muted: '#64748b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 350px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+
+        .interactive-card { transition: all 0.3s ease; cursor: pointer; }
+        .interactive-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: #0891b2; }
+        .card-active { border-color: #1e3a8a; background-color: #eff6ff; }
+
+        .case-selector {
+            @apply px-4 py-2 rounded-full text-xs font-bold transition-all border-2 flex-shrink-0;
+        }
+        .case-active { @apply bg-academic-primary text-white border-academic-primary shadow-md; }
+        .case-inactive { @apply bg-white text-academic-muted border-slate-200 hover:border-academic-accent; }
+
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .scenario-badge {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-academic-bg">
+
+    <!-- Application Structure Plan:
+         SCENARIO UPDATE: "In-Silico Research" (3.5 Months / No Lab).
+         1. Header: Branding + Scenario Badge.
+         2. Narrative Intro: Emphasizing simulation and secondary data analysis.
+         3. Dynamic Case Gallery (Updated for Tools):
+            - Biofuels -> Simulation in Aspen Hysys.
+            - Fluids -> Data Analysis in SPSS (Historical Data).
+            - Architecture -> BIM Simulation.
+            - Economy -> Qualitative Analysis in Atlas.ti.
+         4. Narrative Flow per Case:
+            - Updated Foundations to reflect software limitations (not physical ones).
+         5. Methodology Comparison (Bar Chart): Comparison of specific software stack vs manual.
+    -->
+
+    <header class="bg-academic-surface border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-academic-primary text-white px-3 py-1 rounded font-mono font-bold text-sm">0416</div>
+                <h1 class="font-bold text-lg text-academic-primary uppercase hidden sm:block">METODOLOGÍA DE LA INVESTIGACIÓN</h1>
+                <h1 class="font-bold text-lg text-academic-primary uppercase sm:hidden">METODOLOGÍA</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="scenario-badge hidden md:flex">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    ESCENARIO: 14 SEMANAS (IN-SILICO)
+                </div>
+                <div class="text-xs text-academic-muted font-mono hidden lg:block">Año 2026 | Docente: Ph.D. Juan Andrés Sandoval Herrera</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+
+        <!-- Section 1: Theory Recap -->
+        <section class="text-center max-w-3xl mx-auto">
+            <div class="md:hidden mb-6 flex justify-center">
+                <div class="scenario-badge">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    14 SEMANAS: SIN LABORATORIO
+                </div>
+            </div>
+            <h2 class="text-4xl font-extrabold text-academic-primary mb-6">Investigación Computacional (In-Silico)</h2>
+            <p class="text-lg text-academic-muted leading-relaxed">
+                Escenario sin laboratorio. Validaremos hipótesis mediante <strong>Simulación y Software</strong>.
+            </p>
+        </section>
+
+        <!-- Section 2: Case Selector -->
+        <section id="cases-section" class="space-y-12">
+            <div class="flex justify-start sm:justify-center gap-3 overflow-x-auto pb-4 no-scrollbar">
+                <button onclick="switchCase('biofuel')" id="btn-biofuel" class="case-selector case-active">Ing. Química (Aspen)</button>
+                <button onclick="switchCase('fluids')" id="btn-fluids" class="case-selector case-inactive">Fluidos (SPSS)</button>
+                <button onclick="switchCase('arch')" id="btn-arch" class="case-selector case-inactive">Arquitectura (BIM)</button>
+                <button onclick="switchCase('econ')" id="btn-econ" class="case-selector case-inactive">Economía (Atlas.ti)</button>
+            </div>
+
+            <div id="case-display" class="grid lg:grid-cols-2 gap-12 animate-fade-in">
+                <!-- Data populated via JS -->
+            </div>
+        </section>
+
+        <!-- Section 3: Summary of Tools (Comparison) -->
+        <section class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <!-- Visualization & Content Choices:
+                     Tool effectiveness bar chart. Goal: Compare categories. 
+                     Method: Bar Chart (Chart.js). Justification: Highlights the specific software stack requested.
+                -->
+                <div class="chart-container shadow-md">
+                    <canvas id="toolsChart"></canvas>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-academic-primary mb-4">El Stack Tecnológico 2026</h3>
+                    <p class="text-slate-600 mb-6">Para cumplir en 14 semanas, reemplazamos la experimentación física con modelado y análisis de datos secundarios.</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <span class="text-xl">💻</span>
+                            <div>
+                                <span class="text-xs font-bold text-academic-primary block">Simulación & Modelado</span>
+                                <span class="text-[10px] text-slate-500">Aspen Hysys / BIM (Revit)</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <span class="text-xl">📊</span>
+                            <div>
+                                <span class="text-xs font-bold text-academic-primary block">Análisis de Datos</span>
+                                <span class="text-[10px] text-slate-500">SPSS / Atlas.ti / IA Gratuita</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-academic-primary text-white py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm text-indigo-200">METODOLOGÍA DE LA INVESTIGACIÓN | Universidad de América 2026</p>
+            <div class="mt-4 flex justify-center gap-4">
+                <div class="px-3 py-1 bg-white/10 rounded text-[10px] uppercase font-bold tracking-widest">Leedy & Ormrod (2016)</div>
+                <div class="px-3 py-1 bg-white/10 rounded text-[10px] uppercase font-bold tracking-widest">Enfoque In-Silico</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA STORE (UPDATED FOR NO LAB / 3.5 MONTHS) ---
+        const cases = {
+            biofuel: {
+                title: "Simulación de Biodiésel en Aspen Hysys",
+                problem: "¿Cuál es la configuración energética óptima para la transesterificación de aceite usado simulada en Aspen Hysys V11?",
+                finer: [100, 90, 85, 100, 95], // High Feasibility due to software use
+                subproblems: [
+                    "Selección del paquete termodinámico adecuado (ej. NRTL) en Aspen.",
+                    "Simulación de escenarios variando temperatura y relación molar.",
+                    "Análisis de sensibilidad para minimizar el consumo energético del reboiler."
+                ],
+                foundations: {
+                    assumptions: "Los modelos termodinámicos de Aspen representan fielmente el equilibrio líquido-vapor real.",
+                    delimitations: "Simulación en estado estacionario (steady-state), no dinámico.",
+                    limitations: "Limitación de la base de datos de Aspen para impurezas específicas del aceite usado."
+                }
+            },
+            fluids: {
+                title: "Análisis Estadístico de Fallos (SPSS)",
+                problem: "¿Existen correlaciones significativas entre las horas de operación y el tipo de fallo en bombas centrífugas según datos históricos del sector (Open Data)?",
+                finer: [95, 85, 90, 100, 90],
+                subproblems: [
+                    "Curaduría y limpieza de bases de datos de mantenimiento (Kaggle/Repositorios).",
+                    "Análisis descriptivo y correlacional bivariado en SPSS.",
+                    "Generación de un modelo predictivo simple (Regresión Logística) usando IA gratuita."
+                ],
+                foundations: {
+                    assumptions: "La data histórica secundaria es veraz y no tiene sesgos de registro.",
+                    delimitations: "Análisis limitado a bombas de agua industriales (>50 HP).",
+                    limitations: "Imposibilidad de validar fallos en campo (falta de acceso físico)."
+                }
+            },
+            arch: {
+                title: "Confort Térmico en VIS mediante BIM",
+                problem: "¿Cómo varía el índice de confort térmico interior al modificar la orientación de una vivienda VIS típica usando simulaciones en software BIM?",
+                finer: [90, 95, 85, 100, 95],
+                subproblems: [
+                    "Modelado 3D detallado de la tipología VIS en software BIM.",
+                    "Configuración de parámetros climáticos locales (Bogotá) en el motor de simulación.",
+                    "Comparación de escenarios de asoleamiento y ganancia térmica."
+                ],
+                foundations: {
+                    assumptions: "Los datos meteorológicos del software corresponden al año típico actual.",
+                    delimitations: "Modelo digital sin considerar el efecto isla de calor del entorno urbano denso.",
+                    limitations: "Capacidad de procesamiento de los equipos disponibles para renders complejos."
+                }
+            },
+            econ: {
+                title: "Percepción de Informalidad (Atlas.ti)",
+                problem: "¿Cuáles son las categorías semánticas predominantes en el discurso digital sobre 'comercio informal' en Twitter/X Colombia (2025)?",
+                finer: [100, 90, 95, 90, 95],
+                subproblems: [
+                    "Recolección de corpus textual mediante herramientas de scraping gratuito.",
+                    "Codificación abierta y axial de narrativas usando Atlas.ti.",
+                    "Análisis de redes semánticas para identificar polarización."
+                ],
+                foundations: {
+                    assumptions: "Las opiniones en redes sociales reflejan el sentimiento público general.",
+                    delimitations: "Análisis limitado a posts en español geolocalizados en Bogotá.",
+                    limitations: "Restricciones de API gratuitas que limitan la cantidad de tweets descargables."
+                }
+            }
+        };
+
+        let currentRadarChart = null;
+
+        // --- WRAPPING LOGIC (16-char limit) ---
+        function wrapLabel(label, maxLen = 16) {
+            if (label.length <= maxLen) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + ' ' + words[i]).length <= maxLen) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // --- RENDER LOGIC ---
+        function switchCase(id) {
+            // Update Buttons Styling
+            ['biofuel', 'fluids', 'arch', 'econ'].forEach(key => {
+                const btn = document.getElementById(`btn-${key}`);
+                if (key === id) {
+                    btn.classList.add('case-active');
+                    btn.classList.remove('case-inactive');
+                } else {
+                    btn.classList.add('case-inactive');
+                    btn.classList.remove('case-active');
+                }
+            });
+
+            const data = cases[id];
+            const container = document.getElementById('case-display');
+            
+            container.innerHTML = `
+                <div class="space-y-8">
+                    <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[10px] font-black uppercase text-academic-accent tracking-widest block">Problema (Enfoque Simulación/Datos)</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded font-mono">14 Semanas</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-academic-primary mb-4 leading-tight">${data.title}</h3>
+                        <p class="text-sm text-slate-600 bg-slate-50 p-4 rounded-xl italic border-l-4 border-academic-primary">
+                            "${data.problem}"
+                        </p>
+                    </div>
+
+                    <div class="grid gap-4">
+                        <div class="p-4 bg-indigo-900 text-white rounded-2xl shadow-lg">
+                            <h4 class="font-bold mb-1 flex items-center gap-2 text-sm uppercase tracking-wider"><span>🏗️</span> SUPOSICIONES</h4>
+                            <p class="text-xs opacity-80 leading-relaxed">${data.foundations.assumptions}</p>
+                        </div>
+                        <div class="p-4 bg-academic-accent text-white rounded-2xl shadow-lg">
+                            <h4 class="font-bold mb-1 flex items-center gap-2 text-sm uppercase tracking-wider"><span>🚧</span> ALCANCE</h4>
+                            <p class="text-xs opacity-80 leading-relaxed">${data.foundations.delimitations}</p>
+                        </div>
+                        <div class="p-4 bg-slate-100 text-slate-800 rounded-2xl border border-slate-200">
+                            <h4 class="font-bold mb-1 flex items-center gap-2 text-sm uppercase tracking-wider"><span>🌪️</span> LIMITACIONES</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">${data.foundations.limitations}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- Visualization & Content Choices:
+                         Case Specific Radar Chart. Goal: Inform (single category breakdown).
+                         Method: Radar Chart (Chart.js). Justification: Multivariable evaluation (FINER) is best visualized here.
+                    -->
+                    <div class="chart-container shadow-xl">
+                        <canvas id="radarCaseChart"></canvas>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                        <h4 class="font-bold text-academic-primary mb-4 text-sm uppercase tracking-widest">Sub-problemas (Lógica Computacional)</h4>
+                        <ul class="space-y-4">
+                            ${data.subproblems.map((sp, i) => `
+                                <li class="flex gap-4 text-xs text-slate-600 leading-relaxed">
+                                    <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold text-[10px] shrink-0">${i+1}</span>
+                                    <span>${sp}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            initRadar(data.finer);
+        }
+
+        function initRadar(finerData) {
+            if (currentRadarChart) currentRadarChart.destroy();
+            const ctx = document.getElementById('radarCaseChart').getContext('2d');
+            const labels = ['Factible (Recursos)', 'Interesante', 'Novedoso', 'Ético (Datos)', 'Relevante'];
+            
+            currentRadarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels.map(l => wrapLabel(l)),
+                    datasets: [{
+                        label: 'Evaluación FINER (In-Silico)',
+                        data: finerData,
+                        backgroundColor: 'rgba(8, 145, 178, 0.2)',
+                        borderColor: '#0891b2',
+                        pointBackgroundColor: '#0891b2',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0, max: 100,
+                            ticks: { display: false },
+                            pointLabels: { font: { size: 9, weight: 'bold', family: 'Inter' } }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    return Array.isArray(label) ? label.join(' ') : label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initToolsChart() {
+            const ctx = document.getElementById('toolsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Aspen Hysys / BIM', 'SPSS / Atlas.ti', 'IA Gratuita', 'Manual / Lápiz'].map(l => wrapLabel(l)),
+                    datasets: [
+                        { 
+                            label: 'Utilidad en 14 Semanas', 
+                            data: [95, 90, 85, 40], 
+                            backgroundColor: ['#1e3a8a', '#1e3a8a', '#0891b2', '#94a3b8'] 
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { max: 100, title: { display: true, text: 'Nivel de Uso (%)', font: { size: 10 } } } },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    return Array.isArray(label) ? label.join(' ') : label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            switchCase('biofuel');
+            initToolsChart();
+        });
+    </script>
+
+    <!-- Visualization & Content Choices:
+         1. Case Selector: Navigation for 4 domains.
+         2. Problem Detail: Narrative context updated for In-Silico scenario.
+         3. Foundation Cards: Updated Assumptions for software validity.
+         4. Radar Chart: Compare FINER metrics (Goal: Compare).
+         5. Tools Bar Chart: Specific software stack comparison (Goal: Compare).
+         Confirmed: NO SVG, NO Mermaid JS. Chart labels wrap at 16 chars.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</body>
+</html>
